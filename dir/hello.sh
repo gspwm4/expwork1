@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "Хелоу педики!"
+echo "Hell world!"
