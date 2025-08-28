@@ -1,11 +1,10 @@
-#include <dirent.h>
-#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <dirent.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 
-// НИЧЕГО ЗДЕСЬ НЕ ТРОГАЙ!!!
 int main(){
     char buff[1024];
     const char *dir_path = "dir";
@@ -13,29 +12,6 @@ int main(){
 
     struct stat dir_info;
     struct stat file_info;
-
-    DIR *op_dir = opendir(dir_path);
-
-    if(op_dir == NULL){
-        fprintf(stderr, "Open directory \033[31mERROR\033[0m");
-        closedir(op_dir);
-        return EXIT_FAILURE;
-    }
-    else{
-        fprintf(stdout, "Open directory DONE\n");
-    }
-
-    struct dirent *exam;
-    exam = readdir(op_dir);
-
-    if(exam != NULL && exam->d_type == DT_DIR){
-        fprintf(stdout, "Read directory it is directory %s\n", dir_path);
-    }
-    else{
-        fprintf(stderr, "Read directory ERROR\n");
-        closedir(op_dir);
-        return EXIT_FAILURE;
-    }
 
     int dir_stat = stat(dir_path, &dir_info);
 
@@ -52,6 +28,28 @@ int main(){
         fprintf(stderr, "Check directory \033[31m %s isn't a directory\033[0m\n", dir_path);
         return EXIT_FAILURE;
     }
+
+
+    DIR *op_dir = opendir(dir_path);
+
+    if(op_dir == NULL){
+        fprintf(stderr, "Open directory \033[31mERROR\033[0m\n");
+        return EXIT_FAILURE;
+    }
+    else{
+        fprintf(stdout, "Open directory DONE\n");
+    }
+
+    struct dirent *exam;
+
+    while((exam = readdir(op_dir)) != NULL){
+       fprintf(stdout, "In directory %s have %s\n",dir_path, exam->d_name);
+        if(exam->d_type == DT_DIR){
+            fprintf(stdout, "Find and read directory %s\n",dir_path);
+            break;
+        }
+    }
+
     int file_stat = stat(dir_file, &file_info);
 
     if(file_stat == -1){
@@ -108,5 +106,6 @@ int main(){
         fprintf(stderr, "file %s execution \033[31mERROR\033[0m\n", dir_file);
         return EXIT_FAILURE;
     }
+    closedir(op_dir);
     return 0;
 }
