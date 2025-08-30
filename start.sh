@@ -1,2 +1,0 @@
-#!/bin/bash
-gcc builder.c -o builder -Wall -Wextra -pedantic -std=gnu99
