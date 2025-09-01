@@ -4,14 +4,17 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-
+#include "cr_dir.h"
 int main(){
     char buff[1024];
     const char *dir_path = "dir";
-    const char *dir_file = "dir/hello.sh";
+    const char *dir_file = "dir/hello";
+    const char *dir_assets = "Assets";
 
     struct stat dir_info;
     struct stat file_info;
+
+    create_directories(dir_assets);
 
     int dir_stat = stat(dir_path, &dir_info);
 
@@ -24,11 +27,6 @@ int main(){
         fprintf(stderr, "Check directory \033[31mdidn't find a %s\033[0m\n", dir_path);
         return EXIT_FAILURE;
     }
-    else{
-        fprintf(stderr, "Check directory \033[31m %s isn't a directory\033[0m\n", dir_path);
-        return EXIT_FAILURE;
-    }
-
 
     DIR *op_dir = opendir(dir_path);
 
@@ -37,7 +35,7 @@ int main(){
         return EXIT_FAILURE;
     }
     else{
-        fprintf(stdout, "Open directory DONE\n");
+        fprintf(stdout, "Open directory DONE...\n");
     }
 
     struct dirent *exam;
@@ -82,7 +80,7 @@ int main(){
         return EXIT_FAILURE;
     }
 
-    if(ferror(op_file)){
+    else if(ferror(op_file)){
         fprintf(stderr, "\033[31OStream file path ERROR\033[0m");
         fclose(op_file);
         return EXIT_FAILURE;
@@ -100,7 +98,7 @@ int main(){
     }
     fprintf(stdout, "File execution...\n");
     fflush(stdout);
-    int ex_fl = execl(dir_file, "hello.sh", NULL);
+    int ex_fl = execl(dir_file, "hello", NULL);
     fflush(stdout);
     if(ex_fl == -1){
         fprintf(stderr, "file %s execution \033[31mERROR\033[0m\n", dir_file);
