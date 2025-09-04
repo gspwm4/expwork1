@@ -1,1 +1,1 @@
-gcc builder.c -o builder -Wall -Wextra -pedantic -std=gnu99
+gcc builder.c cr_dir.c -o builder -Wall -Wextra -pedantic -std=gnu99
