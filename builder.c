@@ -46,11 +46,11 @@ int main(){
         fprintf(stdout, "Open directory DONE...\n");
     }
 
-    struct dirent *exam;
+    struct dirent *en_dir;
 
-    while((exam = readdir(op_dir)) != NULL){
-       fprintf(stdout, "In directory dir have %s\n", exam->d_name);
-        if(exam->d_type == DT_DIR){
+    while((en_dir = readdir(op_dir)) != NULL){
+       fprintf(stdout, "In directory dir have %s\n", en_dir->d_name);
+        if(en_dir->d_type == DT_DIR){
             fprintf(stdout, "Find and read directory dir\n");
             break;
         }

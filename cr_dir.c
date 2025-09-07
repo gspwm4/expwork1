@@ -27,18 +27,15 @@ void create_directories(){
     }
 }
 
-int check_directories(const char *path){
+void check_directories(const char *path){
     DIR *op_path = opendir(path);
     if(op_path == NULL){
         fprintf(stderr, "Open %s directory ERROR\n", path);
-        return EXIT_FAILURE;
+        return;
     }
     struct dirent *en_path;
-    int read_count;
     while((en_path = readdir(op_path)) != NULL){
         fprintf(stdout, "In directory %s have %s\n", path, en_path->d_name);
-        read_count++;
     }
     closedir(op_path);
-    return read_count++;
 }
