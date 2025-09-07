@@ -79,7 +79,7 @@ int main(){
     else{
         fprintf(stdout, "Check file \033[32mfind a path file dir/hello\033[0m\n");
     }
-    char *text = "#!/bin/bash\necho \"Hell, World!\"\n");
+    char *text = "#!/bin/bash\necho \"Hell, World!\"\n";
     fprintf(op_file, "%s", text);
     fclose(op_file);
 
