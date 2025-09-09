@@ -80,7 +80,14 @@ int main(){
         fprintf(stdout, "Check file \033[32mfind a path file dir/hello\033[0m\n");
     }
     char *text = "#!/bin/bash\necho \"Hell, World!\"\n";
-    fprintf(op_file, "%s", text);
+    int write_text = fprintf(op_file, "%s", text);
+    if(write_text < 0){
+        printf("Write text ERROR...\n");
+        return EXIT_FAILURE;
+    }
+    else{
+        printf("Write text DONE...\n");
+    }
     fclose(op_file);
 
     size_t bin_read;
