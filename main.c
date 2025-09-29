@@ -5,6 +5,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include "main1.h"
 int main(){
     const char *dir_assets = "Assets";
@@ -30,12 +31,6 @@ int main(){
     }
     else if(stat("dir", &dir_info) == -1){
         perror("stat failed");
-
-    if(stat("dir", &dir_info) == 0){
-        if(S_ISDIR(dir_info.st_mode)){
-         fprintf(stdout, "Check directory \033[32mfind directory dir\033[0m\n");               
-        }
-    }
     }
     DIR *op_dir = opendir("dir");
 
@@ -75,9 +70,6 @@ int main(){
     if(write_text < 0){
         perror("Write text failed");
     }
-    else{
-        fprintf(stdout, "Check file \033[32mfind a path file dir/hello\033[0m\n");
-    }
     fclose(op_file);
 
     FILE *r_file = fopen("dir/hello", "rb");
@@ -86,7 +78,6 @@ int main(){
         perror("fopen file failed");
         return EXIT_FAILURE;
     }
-    fclose(r_file);
     int ch_per = chmod("dir/hello", 0755);
     if(ch_per == -1){
         perror("chmod failed");
@@ -97,7 +88,19 @@ int main(){
     }
     fprintf(stdout, "File execution...\n");
     fflush(stdout);
+    fclose(r_file);
     closedir(op_dir);
-    execl("dir/hello", "dir/hello", NULL);
+    pid_t pid = fork();
+    if(pid == 0){
+        execl("dir/hello", "dir/hello", NULL);
+        exit(EXIT_FAILURE);
+    }
+    if(pid > 0){
+        wait(NULL);
+
+    }
+    if(pid < 0){
+        exit(1);
+    }
     return 0;
 }
