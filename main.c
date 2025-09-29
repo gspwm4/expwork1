@@ -5,7 +5,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "cr_dir.h"
+#include "main1.h"
 int main(){
     const char *dir_assets = "Assets";
     const char *dir_textures = "Assets/Textures";
@@ -30,9 +30,13 @@ int main(){
     }
     else if(stat("dir", &dir_info) == -1){
         perror("stat failed");
-        return EXIT_FAILURE;
-    }
 
+    if(stat("dir", &dir_info) == 0){
+        if(S_ISDIR(dir_info.st_mode)){
+         fprintf(stdout, "Check directory \033[32mfind directory dir\033[0m\n");               
+        }
+    }
+    }
     DIR *op_dir = opendir("dir");
 
     if(op_dir == NULL){
@@ -50,9 +54,9 @@ int main(){
            continue;
        }
        fprintf(stdout, "In directory dir have %s\n", en_dir->d_name);
-       if(en_dir->d_type == DT_DIR){
-           fprintf(stdout, "Find and read directory dir\n");
-           break;
+        if(en_dir->d_type == DT_DIR){
+            fprintf(stdout, "Find and read directory dir\n");
+            break;
         }
     }
 
@@ -70,10 +74,9 @@ int main(){
     int write_text = fprintf(op_file, "%s", text);
     if(write_text < 0){
         perror("Write text failed");
-        return EXIT_FAILURE;
     }
     else{
-        printf("Write text DONE...\n");
+        fprintf(stdout, "Check file \033[32mfind a path file dir/hello\033[0m\n");
     }
     fclose(op_file);
 
@@ -98,4 +101,3 @@ int main(){
     execl("dir/hello", "dir/hello", NULL);
     return 0;
 }
-
